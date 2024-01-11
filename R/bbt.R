@@ -126,11 +126,11 @@ bbt_bib <- function(keys, translator = getOption("rbbt.default.translator", "bib
   } else {
 
     if(length(index) > 0){
-      result$result[[3]] <- paste0(c(result$result[[3]], rPkgs, ""),
+      result$result[[1]] <- paste0(c(result$result[[1]], rPkgs, ""),
                                    collapse = "\n")
     }
 
-    .action(result$result[[3]])
+    .action(result$result[[1]])
   }
 }
 
