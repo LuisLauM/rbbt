@@ -83,6 +83,8 @@ bbt_bib <- function(keys, translator = getOption("rbbt.default.translator", "bib
     return(.action(""))
   }
 
+  assert_bbt()
+
   index <- grep(pattern = "^rpkg_", x = keys, ignore.case = TRUE)
 
   if(length(index) > 0){
@@ -99,7 +101,7 @@ bbt_bib <- function(keys, translator = getOption("rbbt.default.translator", "bib
 
       lapply(as.character)
 
-    rPkgs <- mapply(x = rPkgs, y = keys[index],
+    rPkgs_refs <- mapply(x = rPkgs, y = keys[index],
                     FUN = \(x, y) c(gsub(pattern = "\\{[[:graph:]]*,$",
                                          replacement = sprintf("\\{%s,", y),
                                          x = x[1]), x[-1]),
@@ -110,27 +112,33 @@ bbt_bib <- function(keys, translator = getOption("rbbt.default.translator", "bib
       paste(collapse = "\n\n")
 
     keys <- keys[-index]
+  }else{
+    rPkgs_refs <- NULL
   }
 
-  assert_bbt()
-  translator <- match.arg(translator, choices = c("json", "biblatex", "bibtex", "cslyaml"))
-  result <- bbt_call_json_rpc(
-    "item.export",
-    as.list(unique(as.character(keys))),
-    translator,
-    library_id
-  )
+  if(length(keys) > 0){
+    translator <- match.arg(translator, choices = c("json", "biblatex", "bibtex", "cslyaml"))
+    result <- bbt_call_json_rpc(
+      "item.export",
+      as.list(unique(as.character(keys))),
+      translator,
+      library_id
+    )
 
-  if (!is.null(result$error)) {
+    bib_refs <- result$result[[1]]
+  }else{
+    bib_refs <- NULL
+  }
+
+  if (exists("result") && !is.null(result$error)) {
     stop(result$error$message, call. = FALSE)
   } else {
 
     if(length(index) > 0){
-      result$result[[1]] <- paste0(c(result$result[[1]], rPkgs, ""),
-                                   collapse = "\n")
+      all_refs <- paste0(c(bib_refs, rPkgs_refs, ""), collapse = "\n")
     }
 
-    .action(result$result[[1]])
+    .action(all_refs)
   }
 }
 
