@@ -20,7 +20,7 @@ addin, or to the console otherwise.
 You can install rbbt from GitHub with:
 
 ``` r
-remotes::install_github("paleolimbot/rbbt")
+remotes::install_github("LuisLauM/rbbt")
 ```
 
 ``` r
@@ -83,6 +83,12 @@ based on the citations in the currently selected document. You can use
 bibliography file from the console.
 
 # Versions
+
+## 0.0.3
+
+- It is now possible to run the `bbt_update_bib` function on a file
+  where there are ONLY references to R packages (until the previous
+  version, this caused an error message).
 
 ## 0.0.1
 

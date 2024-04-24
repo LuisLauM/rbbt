@@ -28,7 +28,7 @@ The goal of rbbt is to connect R to the [Better Bibtex for Zotero connector](htt
 You can install rbbt from GitHub with:
 
 ``` r
-remotes::install_github("paleolimbot/rbbt")
+remotes::install_github("LuisLauM/rbbt")
 ```
 
 ```{r}
@@ -54,6 +54,9 @@ Besides, for the commands to work correctly, they must be executed having the Rm
 To make this work seamlessly with [knitr](https://yihui.org/knitr/) and [rmarkdown](https://rmarkdown.rstudio.com/), use the "Update bibliography for current document" addin to write your bibliography file based on the citations in the currently selected document. You can use `bbt_update_bib("some_file.Rmd")` to detect citations and write your bibliography file from the console.
 
 # Versions
+
+## 0.0.3
+- It is now possible to run the `bbt_update_bib` function on a file where there are ONLY references to R packages (until the previous version, this caused an error message).
 
 ## 0.0.1
 
